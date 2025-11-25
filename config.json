@@ -1,0 +1,23 @@
+{
+    "devices": [
+        {
+            "serial_number": "1C201FDF600CN2",
+            "connection": {
+                "type": "usb",
+                "device_ip": "192.168.18.23"
+            },
+            "automations": {
+                "INSTAGRAM": {
+                    "skip": false,
+                    "post_info": [
+                        {
+                            "profile_name": "1",
+                            "folder_url": "https://drive.google.com/drive/folders/1PlEYOy6WuzF5NAlzMIP1zY_WJ7n--QLD?usp=sharing",
+                            "photos_amount": 4
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
