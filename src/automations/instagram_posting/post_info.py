@@ -9,5 +9,4 @@ def get_post_info() -> Optional[InstagramPostInfo]:
 
 def set_post_info(post_info: Optional[InstagramPostInfo]) -> None:
     global post_info_global
-    print(post_info)
     post_info_global = post_info

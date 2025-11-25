@@ -64,7 +64,7 @@ class Screen(ABC, Generic[ScreenNameT]):
                     break
             time.sleep(0.5)
             template_matches = find_all(Template(template_path))
-            is_template_present = any(m["confidence"] > 0.9 for m in template_matches)
+            is_template_present = template_matches != None
         
         if is_template_present:
             return template_path

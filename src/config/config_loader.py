@@ -11,6 +11,10 @@ class InstagramPostInfo(TypedDict):
     profile_name: str
     folder_url: str
     photos_amount: int
+    audio_url: str
+    use_audio: bool
+    caption: str
+    use_caption: bool
 
 
 class InstagramAutomation(TypedDict):

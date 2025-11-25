@@ -7,6 +7,7 @@ from airtest.core.api import *
 from device_manager import DeviceManager
 from project_root import PROJECT_ROOT
 
+from automations.instagram_posting.post_info import get_post_info
 from automations.Screen import Screen
 from .screen_names import InstagramPostingScreenNames
 
@@ -37,10 +38,28 @@ class Home(Screen):
 
     def handle_screen(self):
         self.logger.debug(f"{self.get_name()}: Handling screen")
+        post_info = get_post_info()
 
-        make_post_btn_template_path = os.path.join(self.templates_path, "home_make_post_btn.png")
-        touch(Template(make_post_btn_template_path))
-        self.logger.debug(f"{self.get_name()}: Make post btn has been clicked")
+        if post_info["use_audio"]:
+            self.device_manager.open_url(post_info["audio_url"])
+            self.logger.debug(f"{self.get_name()}: Opened post with needed audio")
+
+            song_btn_template_path = self.wait_for_template(
+                template_path=os.path.join(self.templates_path, "home_song_btn.png")
+            )
+            touch(Template(song_btn_template_path))
+            self.logger.debug(f"{self.get_name()}: Song btn has been clicked")
+
+            use_audio_btn_template_path = self.wait_for_template(
+                template_path=os.path.join(self.templates_path, "home_use_audio_btn.png")
+            )
+            touch(Template(use_audio_btn_template_path))
+            self.logger.debug(f"{self.get_name()}: Use audio btn has been clicked")
+        else:
+            make_post_btn_template_path = os.path.join(self.templates_path, "home_make_post_btn.png")
+            touch(Template(make_post_btn_template_path))
+            self.logger.debug(f"{self.get_name()}: Make post btn has been clicked")
+        
 
         next_screen = self.wait_screen_from_list(
             screen_names=[

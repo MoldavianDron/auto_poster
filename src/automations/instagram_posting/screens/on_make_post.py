@@ -8,7 +8,7 @@ from device_manager import DeviceManager
 from project_root import PROJECT_ROOT
 
 from automations.Screen import Screen
-from automations.post_info import get_post_info
+from automations.instagram_posting.post_info import get_post_info
 from .screen_names import InstagramPostingScreenNames
 
 class OnMakePost(Screen):
@@ -47,7 +47,6 @@ class OnMakePost(Screen):
         time.sleep(1)
 
         photos_amount = get_post_info()["photos_amount"]
-        self.logger.debug(str(photos_amount))
         if (photos_amount == 1):
             next_btn_template_path = os.path.join(self.templates_path, "on_make_post_next_btn.png")
             touch(Template(next_btn_template_path))
@@ -63,6 +62,21 @@ class OnMakePost(Screen):
         touch(Template(next_btn_template_path))
         self.logger.debug(f"{self.get_name()}: Next btn has been clicked")
 
-        return None
+        preview_next_btn_template_path = self.wait_for_template(
+            template_path=os.path.join(self.templates_path, "on_make_post_preview_next_btn.png")
+        )
+        touch(Template(preview_next_btn_template_path))
+        self.logger.debug(f"{self.get_name()}: Preview next btn has been clicked")
+
+        next_screen = self.wait_screen_from_list(
+            screen_names=[
+                InstagramPostingScreenNames.NEW_POST,
+            ]
+        )
+
+        if next_screen == None:
+            return self.detect_next_screen()
+
+        return next_screen
 
 

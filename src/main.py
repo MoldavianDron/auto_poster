@@ -27,7 +27,6 @@ def worker(device: DeviceConfig, log_dir: str):
         
         posts_info = device["automations"]["INSTAGRAM"]["post_info"]
         for post_info in posts_info:
-            print(post_info)
             set_post_info(post_info=post_info)
             instagram_posting(device_manager=device_manager)
 

@@ -30,7 +30,6 @@ class OnMakeStory(Screen):
         if add_media_btn_matches == None:
             return False
         
-        print(story_btn_matches, add_media_btn_matches)
         return (
             any(m["confidence"] > 0.9 for m in story_btn_matches) and
             any(m["confidence"] > 0.9 for m in add_media_btn_matches)

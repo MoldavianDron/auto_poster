@@ -44,7 +44,8 @@ def instagram_posting(device_manager: DeviceManager):
                 InstagramPostingScreenNames.FINISH_ACCOUNT_SETUP_MODAL,
                 InstagramPostingScreenNames.HOME,
                 InstagramPostingScreenNames.ON_MAKE_POST,
-                InstagramPostingScreenNames.ON_MAKE_STORY
+                InstagramPostingScreenNames.ON_MAKE_STORY,
+                InstagramPostingScreenNames.NEW_POST
             ],
             timeout=5
         )

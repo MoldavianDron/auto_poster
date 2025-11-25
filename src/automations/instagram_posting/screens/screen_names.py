@@ -5,3 +5,4 @@ class InstagramPostingScreenNames(str, Enum):
     HOME = "HOME"
     ON_MAKE_POST = "ON_MAKE_POST"
     ON_MAKE_STORY = "ON_MAKE_STORY"
+    NEW_POST = "NEW_POST"

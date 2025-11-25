@@ -12,6 +12,13 @@ class DeviceManager:
 
     def get_device_serial_number(self) -> str:
         return self.serial_number
+    
+    def open_url(self, url: str):
+        # adb shell am start -a android.intent.action.VIEW -d https://www.instagram.com/reels/audio/2076918953126759/
+        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.VIEW", "-d", url]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+        if result.returncode != 0:
+            return f"❌ Failed to get IP address: {result.stderr.strip()}"
 
     def _enable_tcpip(self):
         """
