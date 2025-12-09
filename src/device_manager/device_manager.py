@@ -44,3 +44,19 @@ class DeviceManager:
             raise ValueError(f"Invalid connection config for device {self.serial_number}")
 
         return self.device
+    
+    def save_screenshot(self, file_path: str) -> str:
+        """
+        Capture a screenshot from the connected Airtest device and save it to the provided file path.
+        
+        :param file_path: Full path where the screenshot will be saved.
+        :return: Saved file path.
+        """
+        if not self.device:
+            raise RuntimeError("Device is not connected. Call connect() first.")
+
+        try:
+            self.device.snapshot(filename=file_path)
+            return file_path
+        except Exception as e:
+            raise RuntimeError(f"Failed to take screenshot: {e}")

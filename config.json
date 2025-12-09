@@ -7,20 +7,44 @@
                 "device_ip": "192.168.18.23"
             },
             "automations": {
-                "INSTAGRAM": {
-                    "skip": false,
-                    "post_info": [
-                        {
-                            "profile_name": "1",
-                            "folder_url": "https://drive.google.com/drive/folders/1PlEYOy6WuzF5NAlzMIP1zY_WJ7n--QLD?usp=sharing",
-                            "photos_amount": 4,
-                            "use_audio": true,
-                            "audio_url": "https://www.instagram.com/p/DQ_7_JJEWY6/?igsh=d2tjeWl3OHZyMnRk",
-                            "use_caption": true,
-                            "caption": "Here is my toolset 🙂"
-                        }
-                    ]
-                }
+                "content": [
+                    {
+                        "post_number": 1,
+                        "profile_name": "1",
+                        "folder_url": "https://drive.google.com/drive/folders/1PlEYOy6WuzF5NAlzMIP1zY_WJ7n--QLD?usp=sharing"
+                    }
+                ],
+                "posts_info": [
+                    {
+                        "post_number": 1,
+                        "profile_name": "1",
+                        "automation": "INSTAGRAM",
+                        "photos_amount": 4,
+                        "use_audio": false,
+                        "audio_url": "https://www.instagram.com/p/DR4fwa6jazK/",
+                        "use_caption": true,
+                        "caption": "Here is my toolset 🙂",
+                        "post_photo": true
+                    },
+                    {
+                        "post_number": 1,
+                        "profile_name": "1",
+                        "automation": "THREADS",
+                        "photos_amount": 4,
+                        "use_caption": true,
+                        "caption": "Here is my toolset 🙂",
+                        "post_photo": true
+                    },
+                    {
+                        "post_number": 1,
+                        "profile_name": "1",
+                        "automation": "TWITTER",
+                        "photos_amount": 4,
+                        "use_caption": true,
+                        "caption": "Here is my toolset 🙂",
+                        "post_photo": true
+                    }
+                ]
             }
         }
     ]

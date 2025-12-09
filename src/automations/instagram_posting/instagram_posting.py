@@ -32,7 +32,8 @@ def instagram_posting(device_manager: DeviceManager):
     logger.debug("Waiting for any modal or popup appears")
     current_screen = screen.wait_screen_from_list(
         screen_names=[
-            InstagramPostingScreenNames.FINISH_ACCOUNT_SETUP_MODAL
+            InstagramPostingScreenNames.FINISH_ACCOUNT_SETUP_MODAL,
+            InstagramPostingScreenNames.SIMPLIFIED_NAVIGATION_MODAL
         ],
         timeout=5
     )
@@ -45,14 +46,15 @@ def instagram_posting(device_manager: DeviceManager):
                 InstagramPostingScreenNames.HOME,
                 InstagramPostingScreenNames.ON_MAKE_POST,
                 InstagramPostingScreenNames.ON_MAKE_STORY,
-                InstagramPostingScreenNames.NEW_POST
+                InstagramPostingScreenNames.NEW_POST,
+                InstagramPostingScreenNames.SIMPLIFIED_NAVIGATION_MODAL
             ],
             timeout=5
         )
 
     if current_screen is None:
         current_screen = screen.detect_next_screen()
-
+    
     while current_screen is not None:
         current_screen = current_screen.handle_screen()
 

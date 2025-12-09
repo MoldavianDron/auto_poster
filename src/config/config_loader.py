@@ -1,55 +1,105 @@
 import json
 from pathlib import Path
-from typing import TypedDict, List, Literal, Optional
+from typing import TypedDict, List, Literal, Optional, Union
 
+
+# -------------------------
+# Base connection config
+# -------------------------
 class ConnectionConfig(TypedDict):
     type: Literal["usb", "tcp"]
     device_ip: str
 
 
-class InstagramPostInfo(TypedDict):
+# -------------------------
+# content[] entry
+# -------------------------
+class ContentInfo(TypedDict):
+    post_number: int
     profile_name: str
     folder_url: str
+
+
+# -------------------------
+# INSTAGRAM post_info entry
+# -------------------------
+class InstagramPostInfo(TypedDict):
+    post_number: int
+    profile_name: str
+    automation: Literal["INSTAGRAM"]
     photos_amount: int
-    audio_url: str
     use_audio: bool
-    caption: str
+    audio_url: str
     use_caption: bool
+    caption: str
+    post_photo: bool
 
 
-class InstagramAutomation(TypedDict):
-    skip: bool
-    post_info: List[InstagramPostInfo]
+# -------------------------
+# THREADS post_info entry
+# -------------------------
+class ThreadsPostInfo(TypedDict):
+    post_number: int
+    profile_name: str
+    automation: Literal["THREADS"]
+    photos_amount: int
+    use_caption: bool
+    caption: str
+    post_photo: bool
 
 
-class Automations(TypedDict, total=False):
-    INSTAGRAM: InstagramAutomation
+# -------------------------
+# TWITTER post_info entry
+# -------------------------
+class TwitterPostInfo(TypedDict):
+    post_number: int
+    profile_name: str
+    automation: Literal["TWITTER"]
+    photos_amount: int
+    use_caption: bool
+    caption: str
+    post_photo: bool
 
 
+# Union of all possible post types
+PostInfo = Union[InstagramPostInfo, ThreadsPostInfo, TwitterPostInfo]
+
+
+# -------------------------
+# automations object
+# -------------------------
+class Automations(TypedDict):
+    content: List[ContentInfo]
+    posts_info: List[PostInfo]
+
+
+# -------------------------
+# device entry
+# -------------------------
 class DeviceConfig(TypedDict):
     serial_number: str
     connection: ConnectionConfig
     automations: Automations
 
 
+# -------------------------
+# root config
+# -------------------------
 class Config(TypedDict):
     devices: List[DeviceConfig]
 
 
+# -------------------------
+# Functions
+# -------------------------
 def get_config() -> Config:
-    """
-    Load and return the project config from `config.json`.
-    """
     config_path = Path(__file__).parent.parent.parent / "config.json"
     with open(config_path, "r", encoding="utf-8") as f:
         config_data = json.load(f)
     return config_data
 
+
 def find_device_config(serial_number: str, config: Config) -> Optional[DeviceConfig]:
-    """
-    Find and return a DeviceConfig by its serial number.
-    Returns None if not found.
-    """
     for device in config.get("devices", []):
         if device.get("serial_number") == serial_number:
             return device

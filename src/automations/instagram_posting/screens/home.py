@@ -5,9 +5,10 @@ import logging
 from airtest.core.api import *
 
 from device_manager import DeviceManager
+from logger import get_log_path
 from project_root import PROJECT_ROOT
 
-from automations.instagram_posting.post_info import get_post_info
+from automations.instagram_posting.post_info import get_instagram_post_info
 from automations.Screen import Screen
 from .screen_names import InstagramPostingScreenNames
 
@@ -22,8 +23,8 @@ class Home(Screen):
     
     def is_current_screen(self):
         active_home_btn_template_path = os.path.join(self.templates_path, "home_active_home_btn.png")
-        active_home_btn_matches = find_all(Template(active_home_btn_template_path))
-        if active_home_btn_matches == None:
+        all_home_btn_matches = self.get_all_templates_matches([active_home_btn_template_path])
+        if all_home_btn_matches == None:
             return False
         
         your_story_template_path = os.path.join(self.templates_path, "home_your_story.png")
@@ -32,13 +33,13 @@ class Home(Screen):
             return False
         
         return (
-            any(m["confidence"] > 0.9 for m in active_home_btn_matches) and
+            any(m["confidence"] > 0.9 for m in all_home_btn_matches) and
             any(m["confidence"] > 0.9 for m in your_story_matches)
         )
 
     def handle_screen(self):
         self.logger.debug(f"{self.get_name()}: Handling screen")
-        post_info = get_post_info()
+        post_info = get_instagram_post_info()
 
         if post_info["use_audio"]:
             self.device_manager.open_url(post_info["audio_url"])
@@ -57,7 +58,10 @@ class Home(Screen):
             self.logger.debug(f"{self.get_name()}: Use audio btn has been clicked")
         else:
             make_post_btn_template_path = os.path.join(self.templates_path, "home_make_post_btn.png")
-            touch(Template(make_post_btn_template_path))
+            make_post_btn_second_template_path = os.path.join(self.templates_path, "home_make_post_btn_second.png")
+
+            make_post_btn_any_template = self.wait_for_any_template([make_post_btn_template_path, make_post_btn_second_template_path])
+            touch(Template(make_post_btn_any_template))
             self.logger.debug(f"{self.get_name()}: Make post btn has been clicked")
         
 

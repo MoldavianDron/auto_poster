@@ -7,7 +7,7 @@ from airtest.core.api import *
 from device_manager import DeviceManager
 from project_root import PROJECT_ROOT
 
-from automations.instagram_posting.post_info import get_post_info
+from automations.instagram_posting.post_info import get_instagram_post_info
 from automations.Screen import Screen
 from .screen_names import InstagramPostingScreenNames
 
@@ -32,7 +32,7 @@ class NewPost(Screen):
     
     def handle_screen(self):
         self.logger.debug(f"{self.get_name()}: Handling screen")
-        post_info = get_post_info()
+        post_info = get_instagram_post_info()
 
         if post_info["use_caption"]:
             caption_placeholder_template_path = self.wait_for_template(

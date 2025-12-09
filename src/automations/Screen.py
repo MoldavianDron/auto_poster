@@ -43,7 +43,7 @@ class Screen(ABC, Generic[ScreenNameT]):
         self.logger.debug(f"Found screen {'None' if found_screen is None else found_screen.get_name() }")
         return found_screen
     
-    def detect_next_screen(self) -> Optional[Screen]:
+    def detect_next_screen(self) -> Screen:
         self.logger.debug(f"Detecting next screen...")
         for ScreenClass in self.registered_screens:
             screen = ScreenClass(self.registered_screens, self.device_manager)
@@ -51,7 +51,7 @@ class Screen(ABC, Generic[ScreenNameT]):
             if screen.is_current_screen():
                 return screen
         self.logger.debug("Unknown screen")
-        return None
+        raise TargetNotFoundError("Screen not found")
     
     def wait_for_template(self, template_path: str, timeout: int = 10) -> str:
         start = time.time()
@@ -70,6 +70,28 @@ class Screen(ABC, Generic[ScreenNameT]):
             return template_path
         
         raise TargetNotFoundError
+    
+    def wait_for_any_template(self, template_paths: List[str], timeout: int = 10) -> str:
+        start = time.time()
+
+        while time.time() - start < timeout:
+            for template_path in template_paths:
+                matches = find_all(Template(template_path))
+                if matches:
+                    if any(m["confidence"] > 0.9 for m in matches):
+                        return template_path
+
+            time.sleep(0.5)
+
+        raise TargetNotFoundError(f"None of the templates appeared: {template_paths}")
+    
+    def get_all_templates_matches(self, template_paths: List[str]):
+        all_matches = []
+        for template_path in template_paths:
+            template_matches = find_all(Template(template_path))
+            all_matches.extend(template_matches)
+        return all_matches
+        
 
 
             

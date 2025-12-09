@@ -8,7 +8,7 @@ from device_manager import DeviceManager
 from project_root import PROJECT_ROOT
 
 from automations.Screen import Screen
-from automations.instagram_posting.post_info import get_post_info
+from automations.instagram_posting.post_info import get_instagram_post_info
 from .screen_names import InstagramPostingScreenNames
 
 class OnMakePost(Screen):
@@ -46,7 +46,7 @@ class OnMakePost(Screen):
         self.logger.debug(f"{self.get_name()}: Select multiple btn has been clicked")
         time.sleep(1)
 
-        photos_amount = get_post_info()["photos_amount"]
+        photos_amount = get_instagram_post_info()["photos_amount"]
         if (photos_amount == 1):
             next_btn_template_path = os.path.join(self.templates_path, "on_make_post_next_btn.png")
             touch(Template(next_btn_template_path))
