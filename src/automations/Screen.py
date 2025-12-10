@@ -89,7 +89,10 @@ class Screen(ABC, Generic[ScreenNameT]):
         all_matches = []
         for template_path in template_paths:
             template_matches = find_all(Template(template_path))
-            all_matches.extend(template_matches)
+            if template_matches is not None:
+                all_matches.extend(template_matches)
+        if len(all_matches) == 0:
+            return None
         return all_matches
         
 

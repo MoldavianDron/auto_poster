@@ -5,7 +5,6 @@ import logging
 from airtest.core.api import *
 
 from device_manager import DeviceManager
-from logger import get_log_path
 from project_root import PROJECT_ROOT
 
 from automations.instagram_posting.post_info import get_instagram_post_info
@@ -50,6 +49,17 @@ class Home(Screen):
             )
             touch(Template(song_btn_template_path))
             self.logger.debug(f"{self.get_name()}: Song btn has been clicked")
+            
+            try:
+                view_song_details_template_path = self.wait_for_template(
+                    template_path=os.path.join(self.templates_path, "home_view_song_details.png"),
+                    timeout=2
+                )
+                self.logger.debug(f"{self.get_name()}: View song details popup appeared")
+                touch(Template(view_song_details_template_path))
+                self.logger.debug(f"{self.get_name()}: View song details btn has been clicked")
+            except:
+                self.logger.debug(f"{self.get_name()}: View song details popup didn't appear")
 
             use_audio_btn_template_path = self.wait_for_template(
                 template_path=os.path.join(self.templates_path, "home_use_audio_btn.png")
