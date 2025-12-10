@@ -10,7 +10,7 @@ from .screens.registered_screens import REGISTERED_SCREENS
 from .screens.screen_names import InstagramPostingScreenNames
 
 def instagram_posting(device_manager: DeviceManager):
-    logger = logging.getLogger(device_manager.get_device_serial_number())
+    logger = logging.getLogger(device_manager.get_device_serial())
     logger.info("Instagram posting started")
 
     stop_app("com.instagram.android")

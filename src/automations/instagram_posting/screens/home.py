@@ -15,7 +15,7 @@ class Home(Screen):
     def __init__(self, registered_screens: List[Screen], device_manager: DeviceManager):
         super().__init__(registered_screens, device_manager)
         self.templates_path = os.path.join(PROJECT_ROOT, "automations", "instagram_posting", "templates")
-        self.logger = logging.getLogger(self.device_manager.get_device_serial_number())
+        self.logger = logging.getLogger(self.device_manager.get_device_serial())
 
     def get_name(self):
         return InstagramPostingScreenNames.HOME.value

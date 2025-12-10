@@ -1,21 +1,27 @@
 from airtest.core.api import connect_device
 import subprocess
-from typing import Optional
+from typing import Optional, Literal
 
 
 class DeviceManager:
-    def __init__(self, serial_number: str, connection_type: str, device_ip: Optional[str] = None):
+    def __init__(self, serial_number: str, connection_type: Literal["usb", "tcp"], device_ip: Optional[str] = None):
         self.serial_number = serial_number
         self.connection_type = connection_type
         self.device_ip = device_ip
         self.device = None
 
-    def get_device_serial_number(self) -> str:
-        return self.serial_number
+        # when connection adb connection is established used with -s flag (ip or serial_number of device) in direct adb commands
+        # not implemented in airtest
+        if connection_type == "tcp":
+            self.serial = device_ip
+        else:
+            self.serial = serial_number
+
+    def get_device_serial(self) -> str:
+        return self.serial
     
     def open_url(self, url: str):
-        # adb shell am start -a android.intent.action.VIEW -d https://www.instagram.com/reels/audio/2076918953126759/
-        cmd = ["adb", "shell", "am", "start", "-a", "android.intent.action.VIEW", "-d", url]
+        cmd = ["adb", "-s", self.serial, "shell", "am", "start", "-a", "android.intent.action.VIEW", "-d", url]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
         if result.returncode != 0:
             return f"❌ Failed to get IP address: {result.stderr.strip()}"

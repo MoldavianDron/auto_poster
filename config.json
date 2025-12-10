@@ -4,7 +4,7 @@
             "serial_number": "1C201FDF600CN2",
             "connection": {
                 "type": "usb",
-                "device_ip": "192.168.18.23"
+                "device_ip": "192.168.19.67"
             },
             "automations": {
                 "content": [

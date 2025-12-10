@@ -14,7 +14,7 @@ class Screen(ABC, Generic[ScreenNameT]):
     def __init__(self, registered_screens: List[Screen], device_manager: DeviceManager):
         self.registered_screens = registered_screens
         self.device_manager = device_manager
-        self.logger = logging.getLogger(device_manager.get_device_serial_number())
+        self.logger = logging.getLogger(device_manager.get_device_serial())
 
     def get_name(self) -> ScreenNameT:
         raise NotImplementedError
