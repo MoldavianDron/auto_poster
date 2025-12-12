@@ -36,8 +36,10 @@ class FolderScreen(Screen):
         all_asset_icon_matches = self.get_all_templates_matches([ asset_icon_template_path])
 
         for match in all_asset_icon_matches:
-            center = match['result']
-            touch(center, duration=1)
+            x, y = match['result']
+            self.logger.debug(f"{match}")
+            self.logger.debug(f"{x}, {y}, match result")
+            touch((x + 200, y - 200), duration=1)
 
             download_image_template_path = self.wait_for_template(
                 template_path=os.path.join(self.templates_path, "folder_screen_download_image.png"),

@@ -7,7 +7,12 @@ from airtest.core.api import wake
 from logger import generate_run_id, create_logs_path, init_device_logger, get_log_folder
 from config import get_config, DeviceConfig, InstagramPostInfo, PostInfo
 from device_manager import DeviceManager
-from automations import instagram_posting, set_instagram_post_info, disable_socks_tun_proxy, enable_socks_tun_proxy, set_content_info, download_content
+from automations import (
+    instagram_posting, set_instagram_post_info, 
+    disable_socks_tun_proxy, enable_socks_tun_proxy, 
+    set_content_info, download_content,
+    cleanup_gallery_fn
+)
 
 def find_instagram_post_info(
     posts_info: List[PostInfo],
@@ -44,27 +49,31 @@ def worker(device: DeviceConfig, log_dir: str):
 
         wake()
         logger.debug("Device unlocked")
-
-        # enable_socks_tun_proxy(device_manager=device_manager)
-        # disable_socks_tun_proxy(device_manager=device_manager)
-
+        
         posts = device["automations"]["content"]
         for post in posts:
-            print(post)
             set_content_info(post)
+
+            cleanup_gallery_fn(device_manager)
+
+            disable_socks_tun_proxy(device_manager=device_manager)
+
             download_content(device_manager=device_manager)
-            # instagram_post_info = find_instagram_post_info(
-            #     posts_info=device["automations"]["posts_info"],
-            #     post_number=post["post_number"],
-            #     profile_name=post["profile_name"]
-            # )
-            # if instagram_post_info != None:
-            #     logger.debug(f"PROFILE NAME: {post['profile_name']}. POST NUMBER: {post['post_number']}")
-            #     logger.debug(f"Found instagram post")
-            #     set_instagram_post_info(instagram_post_info)
-            #     instagram_posting(device_manager=device_manager)
-            # else:
-            #     logger.debug("Instagram post info not found, skip posting")
+                
+            enable_socks_tun_proxy(device_manager=device_manager)
+
+            instagram_post_info = find_instagram_post_info(
+                posts_info=device["automations"]["posts_info"],
+                post_number=post["post_number"],
+                profile_name=post["profile_name"]
+            )
+            if instagram_post_info != None:
+                logger.debug(f"PROFILE NAME: {post['profile_name']}. POST NUMBER: {post['post_number']}")
+                logger.debug(f"Found instagram post")
+                set_instagram_post_info(instagram_post_info)
+                instagram_posting(device_manager=device_manager)
+            else:
+                logger.debug("Instagram post info not found, skip posting")
             
 
         logger.info("Automation finished")
